@@ -1,0 +1,237 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>出来高増加銘柄チャート 20260224113027</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body { font-family: "Yu Gothic", "Meiryo", sans-serif; margin: 16px; background:#f7f9fc; }
+    h1 { margin: 0 0 16px; font-size: 22px; }
+    .meta { color:#444; margin: 0 0 24px; }
+    .card { background:#fff; border:1px solid #dbe2ea; border-radius:10px; padding:12px; margin:0 0 20px; }
+    .title { font-weight:700; margin:0 0 8px; }
+    .sub { color:#444; margin:0 0 8px; font-size:13px; }
+    .price { height: 320px; }
+    .volume { height: 140px; margin-top: 8px; }
+    .error { color:#b00020; font-size:13px; }
+  </style>
+</head>
+<body>
+  <h1>出来高増加銘柄 ローソク足チャート</h1>
+  <p class="meta">作成時刻: 20260224113027 / 対象: <span id="count"></span>銘柄</p>
+  <div id="root"></div>
+
+  <script>
+    const items = [
+    {
+        "銘柄コード":  "7863",
+        "銘柄名":  "平賀",
+        "株価":  990,
+        "出来高":  125800,
+        "出来高倍率":  96.769,
+        "時価総額":  "4,016百万円"
+    },
+    {
+        "銘柄コード":  "3823",
+        "銘柄名":  "ＷＨＤＣ",
+        "株価":  72,
+        "出来高":  51581800,
+        "出来高倍率":  77.777,
+        "時価総額":  "7,228百万円"
+    },
+    {
+        "銘柄コード":  "9557",
+        "銘柄名":  "エアクロ",
+        "株価":  483,
+        "出来高":  353400,
+        "出来高倍率":  57.0,
+        "時価総額":  "2,353百万円"
+    },
+    {
+        "銘柄コード":  "8798",
+        "銘柄名":  "アドバンスクリエイト",
+        "株価":  322,
+        "出来高":  3745200,
+        "出来高倍率":  56.404,
+        "時価総額":  "7,906百万円"
+    },
+    {
+        "銘柄コード":  "4893",
+        "銘柄名":  "ノイル",
+        "株価":  126,
+        "出来高":  4775900,
+        "出来高倍率":  37.754,
+        "時価総額":  "6,755百万円"
+    },
+    {
+        "銘柄コード":  "7183",
+        "銘柄名":  "あんしん保証",
+        "株価":  166,
+        "出来高":  802500,
+        "出来高倍率":  33.718,
+        "時価総額":  "3,164百万円"
+    },
+    {
+        "銘柄コード":  "7561",
+        "銘柄名":  "ハークスレイ",
+        "株価":  662,
+        "出来高":  756200,
+        "出来高倍率":  28.973,
+        "時価総額":  "14,611百万円"
+    },
+    {
+        "銘柄コード":  "4379",
+        "銘柄名":  "フォトシンス",
+        "株価":  250,
+        "出来高":  174700,
+        "出来高倍率":  27.297,
+        "時価総額":  "6,305百万円"
+    },
+    {
+        "銘柄コード":  "7794",
+        "銘柄名":  "イーディーピー",
+        "株価":  949,
+        "出来高":  14119700,
+        "出来高倍率":  24.556,
+        "時価総額":  "18,128百万円"
+    },
+    {
+        "銘柄コード":  "6518",
+        "銘柄名":  "三相電機",
+        "株価":  878,
+        "出来高":  122200,
+        "出来高倍率":  20.712,
+        "時価総額":  "5,652百万円"
+    },
+    {
+        "銘柄コード":  "7615",
+        "銘柄名":  "京都きもの友禅ＨＤ",
+        "株価":  88,
+        "出来高":  13102500,
+        "出来高倍率":  18.483,
+        "時価総額":  "3,018百万円"
+    },
+    {
+        "銘柄コード":  "3536",
+        "銘柄名":  "アクサスＨＤ",
+        "株価":  197,
+        "出来高":  128400,
+        "出来高倍率":  14.267,
+        "時価総額":  "4,033百万円"
+    },
+    {
+        "銘柄コード":  "6046",
+        "銘柄名":  "リンクバル",
+        "株価":  137,
+        "出来高":  6996000,
+        "出来高倍率":  13.459,
+        "時価総額":  "3,842百万円"
+    },
+    {
+        "銘柄コード":  "5986",
+        "銘柄名":  "モリテックスチル",
+        "株価":  210,
+        "出来高":  1251300,
+        "出来高倍率":  12.304,
+        "時価総額":  "5,369百万円"
+    },
+    {
+        "銘柄コード":  "5010",
+        "銘柄名":  "日本精蝋",
+        "株価":  223,
+        "出来高":  213400,
+        "出来高倍率":  10.564,
+        "時価総額":  "7,190百万円"
+    }
+];
+    document.getElementById('count').textContent = items.length;
+
+    google.charts.load('current', {packages:['corechart']});
+    google.charts.setOnLoadCallback(init);
+
+    async function fetchHistory(code) {
+      const url = https://query1.finance.yahoo.com/v8/finance/chart/.T?range=max&interval=1d&events=history;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(HTTP );
+      const payload = await res.json();
+      const result = payload?.chart?.result?.[0];
+      if (!result) throw new Error('chart result not found');
+
+      const t = result.timestamp || [];
+      const q = result.indicators?.quote?.[0] || {};
+      const opens = q.open || [];
+      const highs = q.high || [];
+      const lows = q.low || [];
+      const closes = q.close || [];
+      const volumes = q.volume || [];
+
+      const rows = [];
+      for (let i = 0; i < t.length; i++) {
+        const o = opens[i], h = highs[i], l = lows[i], c = closes[i], v = volumes[i];
+        if ([o,h,l,c,v].some(x => x === null || x === undefined)) continue;
+        rows.push([new Date(t[i] * 1000), Number(l), Number(o), Number(c), Number(h), Number(v)]);
+      }
+      return rows;
+    }
+
+    function drawCharts(idPrefix, rows) {
+      const priceData = new google.visualization.DataTable();
+      priceData.addColumn('date', 'Date');
+      priceData.addColumn('number', 'Low');
+      priceData.addColumn('number', 'Open');
+      priceData.addColumn('number', 'Close');
+      priceData.addColumn('number', 'High');
+      priceData.addRows(rows.map(r => [r[0], r[1], r[2], r[3], r[4]]));
+
+      const volumeData = new google.visualization.DataTable();
+      volumeData.addColumn('date', 'Date');
+      volumeData.addColumn('number', 'Volume');
+      volumeData.addRows(rows.map(r => [r[0], r[5]]));
+
+      const priceChart = new google.visualization.CandlestickChart(document.getElementById(${idPrefix}-price));
+      priceChart.draw(priceData, {
+        legend: 'none',
+        candlestick: { fallingColor: { strokeWidth: 0, fill: '#1b5e20' }, risingColor: { strokeWidth: 0, fill: '#c62828' } },
+        chartArea: { left: 55, right: 20, top: 10, bottom: 40 },
+        hAxis: { format: 'yyyy/MM', gridlines: { color: '#eceff4' } },
+        vAxis: { gridlines: { color: '#eceff4' } }
+      });
+
+      const volumeChart = new google.visualization.ColumnChart(document.getElementById(${idPrefix}-volume));
+      volumeChart.draw(volumeData, {
+        legend: 'none',
+        chartArea: { left: 55, right: 20, top: 10, bottom: 35 },
+        hAxis: { format: 'yyyy/MM', gridlines: { color: '#eceff4' } },
+        vAxis: { gridlines: { color: '#eceff4' } },
+        colors: ['#607d8b']
+      });
+    }
+
+    async function init() {
+      const root = document.getElementById('root');
+      for (const item of items) {
+        const id = c;
+        const card = document.createElement('section');
+        card.className = 'card';
+        card.innerHTML = 
+          <div class="title"> </div>
+          <div class="sub">株価:  / 出来高:  / 出来高倍率:  / 時価総額: </div>
+          <div id="-price" class="price"></div>
+          <div id="-volume" class="volume"></div>
+          <div id="-err" class="error"></div>
+        ;
+        root.appendChild(card);
+
+        try {
+          const rows = await fetchHistory(item['銘柄コード']);
+          if (rows.length === 0) throw new Error('有効な時系列データがありません');
+          drawCharts(id, rows);
+        } catch (e) {
+          document.getElementById(${id}-err).textContent = データ取得失敗: ;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
