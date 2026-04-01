@@ -1,0 +1,413 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>銘柄チャート 20260223</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body { font-family: "Yu Gothic UI", sans-serif; margin: 16px; }
+    h1 { margin: 0 0 16px; }
+    .stock { margin: 20px 0 36px; }
+    .label { font-weight: 700; margin-bottom: 15px; }
+    .candle { width: 50%; height: 340px; }
+    .volume { width: 50%; height: 180px; }
+  </style>
+</head>
+<body>
+  <h1>銘柄チャート（YYYY-MM-DD作成）</h1>
+  <div id="charts"></div>
+
+  <script>
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawAll);
+
+    const stocks = 
+      [
+    {
+        "code":  "3315",
+        "name":  "日本コークス工業(株)",
+        "rows":  [
+                     [
+                         "2025/11/17",
+                         104,
+                         117,
+                         101,
+                         113,
+                         35394200
+                     ],
+                     [
+                         "2025/11/25",
+                         113,
+                         120,
+                         110,
+                         115,
+                         20432900
+                     ],
+                     [
+                         "2025/12/1",
+                         112,
+                         113,
+                         99,
+                         99,
+                         28236100
+                     ],
+                     [
+                         "2025/12/8",
+                         101,
+                         103,
+                         97,
+                         99,
+                         28336900
+                     ],
+                     [
+                         "2025/12/15",
+                         99,
+                         101,
+                         97,
+                         100,
+                         20181700
+                     ],
+                     [
+                         "2025/12/22",
+                         101,
+                         108,
+                         100,
+                         105,
+                         19335300
+                     ],
+                     [
+                         "2025/12/29",
+                         106,
+                         112,
+                         105,
+                         108,
+                         6526300
+                     ],
+                     [
+                         "2026/1/5",
+                         110,
+                         118,
+                         108,
+                         114,
+                         17043900
+                     ],
+                     [
+                         "2026/1/13",
+                         115,
+                         120,
+                         112,
+                         113,
+                         13907000
+                     ],
+                     [
+                         "2026/1/19",
+                         113,
+                         114,
+                         104,
+                         107,
+                         16023700
+                     ],
+                     [
+                         "2026/1/26",
+                         103,
+                         110,
+                         100,
+                         110,
+                         15450500
+                     ],
+                     [
+                         "2026/2/2",
+                         111,
+                         128,
+                         110,
+                         123,
+                         25629200
+                     ],
+                     [
+                         "2026/2/9",
+                         124,
+                         133,
+                         118,
+                         123,
+                         21384100
+                     ],
+                     [
+                         "2026/2/16",
+                         126,
+                         134,
+                         121,
+                         124,
+                         22452500
+                     ],
+                     [
+                         "2026/2/24",
+                         126,
+                         141,
+                         120,
+                         139,
+                         24031500
+                     ],
+                     [
+                         "2026/3/2",
+                         140,
+                         144,
+                         109,
+                         115,
+                         37626200
+                     ],
+                     [
+                         "2026/3/9",
+                         117,
+                         141,
+                         109,
+                         125,
+                         57658500
+                     ],
+                     [
+                         "2026/3/16",
+                         127,
+                         134,
+                         113,
+                         114,
+                         38419100
+                     ],
+                     [
+                         "2026/3/23",
+                         114,
+                         131,
+                         107,
+                         128,
+                         67167700
+                     ],
+                     [
+                         "2026/3/30",
+                         148,
+                         153,
+                         114,
+                         121,
+                         164388500
+                     ]
+                 ]
+    },
+    {
+        "code":  "9509",
+        "name":  "北海道電力(株)",
+        "rows":  [
+                     [
+                         "2025/11/17",
+                         1070,
+                         1134,
+                         1065,
+                         1097,
+                         24754400
+                     ],
+                     [
+                         "2025/11/25",
+                         1110,
+                         1295,
+                         1109,
+                         1209,
+                         52459900
+                     ],
+                     [
+                         "2025/12/1",
+                         1224,
+                         1228,
+                         1039,
+                         1039,
+                         29699500
+                     ],
+                     [
+                         "2025/12/8",
+                         1039,
+                         1080,
+                         1008,
+                         1050,
+                         36067300
+                     ],
+                     [
+                         "2025/12/15",
+                         1058,
+                         1080,
+                         1006,
+                         1040,
+                         19647300
+                     ],
+                     [
+                         "2025/12/22",
+                         1048,
+                         1090,
+                         1034,
+                         1060,
+                         14551700
+                     ],
+                     [
+                         "2025/12/29",
+                         1060,
+                         1076,
+                         1051,
+                         1051,
+                         4807100
+                     ],
+                     [
+                         "2026/1/5",
+                         1065,
+                         1140,
+                         1064,
+                         1109,
+                         21220600
+                     ],
+                     [
+                         "2026/1/13",
+                         1130,
+                         1174,
+                         1118,
+                         1164,
+                         12359800
+                     ],
+                     [
+                         "2026/1/19",
+                         1163,
+                         1188,
+                         1107,
+                         1109,
+                         14363700
+                     ],
+                     [
+                         "2026/1/26",
+                         1102,
+                         1108,
+                         1014,
+                         1049,
+                         16315200
+                     ],
+                     [
+                         "2026/2/2",
+                         1050,
+                         1118,
+                         995,
+                         1115,
+                         21754500
+                     ],
+                     [
+                         "2026/2/9",
+                         1134,
+                         1134,
+                         1047,
+                         1090,
+                         26219700
+                     ],
+                     [
+                         "2026/2/16",
+                         1120,
+                         1281,
+                         1114,
+                         1191,
+                         33106500
+                     ],
+                     [
+                         "2026/2/24",
+                         1200,
+                         1242,
+                         1156,
+                         1230,
+                         14971500
+                     ],
+                     [
+                         "2026/3/2",
+                         1173,
+                         1188,
+                         1034,
+                         1060,
+                         24315200
+                     ],
+                     [
+                         "2026/3/9",
+                         1004,
+                         1098,
+                         982,
+                         1058,
+                         24871800
+                     ],
+                     [
+                         "2026/3/16",
+                         1070,
+                         1104,
+                         1045,
+                         1058,
+                         11103600
+                     ],
+                     [
+                         "2026/3/23",
+                         1036,
+                         1114,
+                         1016,
+                         1106,
+                         14962600
+                     ],
+                     [
+                         "2026/3/30",
+                         1066,
+                         1130,
+                         1054,
+                         1130,
+                         10344800
+                     ]
+                 ]
+    }
+]
+    ;
+
+    function drawAll() {
+      const root = document.getElementById('charts');
+      stocks.forEach((s, i) => {
+        const section = document.createElement('section');
+        section.className = 'stock';
+        section.innerHTML = `<div class="label">${s.code} ${s.name}</div><div id="candle_${i}" class="candle"></div><div id="volume_${i}" class="volume"></div>`;
+        root.appendChild(section);
+
+        const candleData = new google.visualization.DataTable(); //OHLCの並びが独特だが、これはGooogleChartの仕様
+        candleData.addColumn('string', 'Date');
+        candleData.addColumn('number', 'Low');
+        candleData.addColumn('number', 'Open');
+        candleData.addColumn('number', 'Close');
+        candleData.addColumn('number', 'High');
+        
+        candleData.addRows(
+          s.rows.map(r => [
+            r[0],
+            r[3], // Low
+            r[1], // Open
+            r[4], // Close
+            r[2]  // High
+          ])
+        );
+
+        const volumeData = new google.visualization.DataTable();
+        volumeData.addColumn('string', 'Date');
+        volumeData.addColumn('number', 'Volume');
+        volumeData.addRows(s.rows.map(r => [r[0], r[5]]));
+
+        new google.visualization.CandlestickChart(document.getElementById(`candle_${i}`)).draw(candleData, {
+          legend: 'none',
+          bar: { groupWidth: '70%' },
+          candlestick: {
+            fallingColor: { strokeWidth: 0, fill: '#1b5e20' },
+            risingColor: { strokeWidth: 0, fill: '#b71c1c' }
+          },
+          chartArea: { left: 60, top: 20, width: '86%', height: '76%' }
+        });
+
+        new google.visualization.ColumnChart(document.getElementById(`volume_${i}`)).draw(volumeData, {
+          legend: 'none',
+          colors: ['#455a64'],
+          chartArea: { left: 60, top: 10, width: '86%', height: '60%' },
+          hAxis: { slantedText: false}
+        });
+      });
+    }
+  </script>
+</body>
+</html>
+
