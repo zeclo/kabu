@@ -1,0 +1,247 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>銘柄チャート 20260223</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body { font-family: "Yu Gothic UI", sans-serif; margin: 16px; }
+    h1 { margin: 0 0 16px; }
+    .stock { margin: 20px 0 36px; }
+    .label { font-weight: 700; margin-bottom: 15px; }
+    .candle { width: 50%; height: 340px; }
+    .volume { width: 50%; height: 180px; }
+  </style>
+</head>
+<body>
+  <h1>銘柄チャート（YYYY-MM-DD作成）</h1>
+  <div id="charts"></div>
+
+  <script>
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawAll);
+
+    const stocks = 
+      [
+    {
+        "code":  "3563",
+        "name":  "(株)ＦＯＯＤ　＆　ＬＩＦＥ　ＣＯＭＰＡＮＩＥＳ",
+        "rows":  [
+                     [
+                         "2025/11/25",
+                         6733,
+                         7390,
+                         6602,
+                         7030,
+                         6072700
+                     ],
+                     [
+                         "2025/12/1",
+                         7078,
+                         7794,
+                         6996,
+                         7607,
+                         6537700
+                     ],
+                     [
+                         "2025/12/8",
+                         7754,
+                         7935,
+                         7366,
+                         7670,
+                         5735800
+                     ],
+                     [
+                         "2025/12/15",
+                         7670,
+                         7845,
+                         7454,
+                         7680,
+                         3741000
+                     ],
+                     [
+                         "2025/12/22",
+                         7691,
+                         7881,
+                         7508,
+                         7826,
+                         3057000
+                     ],
+                     [
+                         "2025/12/29",
+                         7851,
+                         7982,
+                         7775,
+                         7913,
+                         1438500
+                     ],
+                     [
+                         "2026/1/5",
+                         8005,
+                         8808,
+                         8005,
+                         8742,
+                         6293300
+                     ],
+                     [
+                         "2026/1/13",
+                         8883,
+                         8966,
+                         8325,
+                         8419,
+                         4560200
+                     ],
+                     [
+                         "2026/1/19",
+                         8387,
+                         9138,
+                         8330,
+                         8876,
+                         5316800
+                     ],
+                     [
+                         "2026/1/26",
+                         8913,
+                         9064,
+                         8306,
+                         8471,
+                         4825100
+                     ],
+                     [
+                         "2026/2/2",
+                         8471,
+                         9471,
+                         8055,
+                         9433,
+                         11077800
+                     ],
+                     [
+                         "2026/2/9",
+                         9413,
+                         9688,
+                         9076,
+                         9340,
+                         7190600
+                     ],
+                     [
+                         "2026/2/16",
+                         9582,
+                         9660,
+                         9101,
+                         9314,
+                         4492300
+                     ],
+                     [
+                         "2026/2/24",
+                         9464,
+                         10065,
+                         9333,
+                         10065,
+                         3335400
+                     ],
+                     [
+                         "2026/3/2",
+                         9804,
+                         10440,
+                         8452,
+                         9260,
+                         19185500
+                     ],
+                     [
+                         "2026/3/9",
+                         8961,
+                         9749,
+                         8640,
+                         9640,
+                         8844700
+                     ],
+                     [
+                         "2026/3/16",
+                         9650,
+                         9739,
+                         9297,
+                         9510,
+                         2934300
+                     ],
+                     [
+                         "2026/3/23",
+                         9418,
+                         10170,
+                         9266,
+                         9753,
+                         5212300
+                     ],
+                     [
+                         "2026/3/30",
+                         9303,
+                         9912,
+                         9196,
+                         9751,
+                         5341200
+                     ],
+                     [
+                         "2026/4/6",
+                         9747,
+                         9853,
+                         9302,
+                         9588,
+                         3360500
+                     ]
+                 ]
+    }
+]
+    ;
+
+    function drawAll() {
+      const root = document.getElementById('charts');
+      stocks.forEach((s, i) => {
+        const section = document.createElement('section');
+        section.className = 'stock';
+        section.innerHTML = `<div class="label">${s.code} ${s.name}</div><div id="candle_${i}" class="candle"></div><div id="volume_${i}" class="volume"></div>`;
+        root.appendChild(section);
+
+        const candleData = new google.visualization.DataTable(); //OHLCの並びが独特だが、これはGooogleChartの仕様
+        candleData.addColumn('string', 'Date');
+        candleData.addColumn('number', 'Low');
+        candleData.addColumn('number', 'Open');
+        candleData.addColumn('number', 'Close');
+        candleData.addColumn('number', 'High');
+        
+        candleData.addRows(
+          s.rows.map(r => [
+            r[0],
+            r[3], // Low
+            r[1], // Open
+            r[4], // Close
+            r[2]  // High
+          ])
+        );
+
+        const volumeData = new google.visualization.DataTable();
+        volumeData.addColumn('string', 'Date');
+        volumeData.addColumn('number', 'Volume');
+        volumeData.addRows(s.rows.map(r => [r[0], r[5]]));
+
+        new google.visualization.CandlestickChart(document.getElementById(`candle_${i}`)).draw(candleData, {
+          legend: 'none',
+          bar: { groupWidth: '70%' },
+          candlestick: {
+            fallingColor: { strokeWidth: 0, fill: '#1b5e20' },
+            risingColor: { strokeWidth: 0, fill: '#b71c1c' }
+          },
+          chartArea: { left: 60, top: 20, width: '86%', height: '76%' }
+        });
+
+        new google.visualization.ColumnChart(document.getElementById(`volume_${i}`)).draw(volumeData, {
+          legend: 'none',
+          colors: ['#455a64'],
+          chartArea: { left: 60, top: 10, width: '86%', height: '60%' },
+          hAxis: { slantedText: false}
+        });
+      });
+    }
+  </script>
+</body>
+</html>
+
