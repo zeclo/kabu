@@ -1,0 +1,413 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>銘柄チャート 20260223</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body { font-family: "Yu Gothic UI", sans-serif; margin: 16px; }
+    h1 { margin: 0 0 16px; }
+    .stock { margin: 20px 0 36px; }
+    .label { font-weight: 700; margin-bottom: 15px; }
+    .candle { width: 50%; height: 340px; }
+    .volume { width: 50%; height: 180px; }
+  </style>
+</head>
+<body>
+  <h1>銘柄チャート（YYYY-MM-DD作成）</h1>
+  <div id="charts"></div>
+
+  <script>
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawAll);
+
+    const stocks = 
+      [
+    {
+        "code":  "5445",
+        "name":  "東京鐵鋼(株)",
+        "rows":  [
+                     [
+                         "2025/12/22",
+                         5840,
+                         6150,
+                         5800,
+                         6120,
+                         224300
+                     ],
+                     [
+                         "2025/12/29",
+                         6150,
+                         6220,
+                         6120,
+                         6180,
+                         103200
+                     ],
+                     [
+                         "2026/1/5",
+                         6220,
+                         6340,
+                         6170,
+                         6290,
+                         260800
+                     ],
+                     [
+                         "2026/1/13",
+                         6360,
+                         6630,
+                         6280,
+                         6580,
+                         270000
+                     ],
+                     [
+                         "2026/1/19",
+                         6600,
+                         6650,
+                         6440,
+                         6570,
+                         242400
+                     ],
+                     [
+                         "2026/1/26",
+                         6530,
+                         6530,
+                         6060,
+                         6170,
+                         395800
+                     ],
+                     [
+                         "2026/2/2",
+                         6270,
+                         6400,
+                         6080,
+                         6360,
+                         335800
+                     ],
+                     [
+                         "2026/2/9",
+                         6480,
+                         6700,
+                         6380,
+                         6390,
+                         273100
+                     ],
+                     [
+                         "2026/2/16",
+                         6460,
+                         6480,
+                         6240,
+                         6270,
+                         337900
+                     ],
+                     [
+                         "2026/2/24",
+                         6280,
+                         6410,
+                         6210,
+                         6410,
+                         308100
+                     ],
+                     [
+                         "2026/3/2",
+                         6330,
+                         6400,
+                         5840,
+                         6230,
+                         787300
+                     ],
+                     [
+                         "2026/3/9",
+                         6060,
+                         6480,
+                         6000,
+                         6260,
+                         371500
+                     ],
+                     [
+                         "2026/3/16",
+                         6260,
+                         6400,
+                         6190,
+                         6300,
+                         206500
+                     ],
+                     [
+                         "2026/3/23",
+                         6250,
+                         6520,
+                         6110,
+                         6480,
+                         397300
+                     ],
+                     [
+                         "2026/3/30",
+                         1913,
+                         2130,
+                         1906,
+                         2000,
+                         1141900
+                     ],
+                     [
+                         "2026/4/6",
+                         1985,
+                         2001,
+                         1946,
+                         1946,
+                         1220500
+                     ],
+                     [
+                         "2026/4/13",
+                         1944,
+                         1965,
+                         1922,
+                         1930,
+                         824800
+                     ],
+                     [
+                         "2026/4/20",
+                         1938,
+                         1943,
+                         1813,
+                         1830,
+                         1096400
+                     ],
+                     [
+                         "2026/4/27",
+                         1823,
+                         1841,
+                         1780,
+                         1819,
+                         1084700
+                     ],
+                     [
+                         "2026/5/7",
+                         1840,
+                         1986,
+                         1815,
+                         1932,
+                         1364800
+                     ]
+                 ]
+    },
+    {
+        "code":  "7012",
+        "name":  "川崎重工業(株)",
+        "rows":  [
+                     [
+                         "2025/12/22",
+                         11170,
+                         11410,
+                         10550,
+                         10605,
+                         9867300
+                     ],
+                     [
+                         "2025/12/29",
+                         10495,
+                         10685,
+                         10220,
+                         10380,
+                         5010900
+                     ],
+                     [
+                         "2026/1/5",
+                         10730,
+                         12395,
+                         10645,
+                         12370,
+                         24206100
+                     ],
+                     [
+                         "2026/1/13",
+                         13190,
+                         14200,
+                         13005,
+                         13965,
+                         20693400
+                     ],
+                     [
+                         "2026/1/19",
+                         13915,
+                         14940,
+                         13205,
+                         13265,
+                         25229600
+                     ],
+                     [
+                         "2026/1/26",
+                         13200,
+                         13390,
+                         12540,
+                         12875,
+                         14554400
+                     ],
+                     [
+                         "2026/2/2",
+                         13145,
+                         14650,
+                         12950,
+                         14650,
+                         24644400
+                     ],
+                     [
+                         "2026/2/9",
+                         15500,
+                         18670,
+                         14905,
+                         17710,
+                         42568900
+                     ],
+                     [
+                         "2026/2/16",
+                         18000,
+                         18135,
+                         16650,
+                         17915,
+                         16999500
+                     ],
+                     [
+                         "2026/2/24",
+                         18005,
+                         18340,
+                         16740,
+                         18255,
+                         16691100
+                     ],
+                     [
+                         "2026/3/2",
+                         18500,
+                         18830,
+                         15385,
+                         16340,
+                         24489100
+                     ],
+                     [
+                         "2026/3/9",
+                         15200,
+                         17020,
+                         14980,
+                         16420,
+                         21159400
+                     ],
+                     [
+                         "2026/3/16",
+                         16400,
+                         17020,
+                         15850,
+                         16500,
+                         11834600
+                     ],
+                     [
+                         "2026/3/23",
+                         16005,
+                         16080,
+                         14705,
+                         15195,
+                         19127000
+                     ],
+                     [
+                         "2026/3/30",
+                         2851,
+                         3282,
+                         2826,
+                         3161,
+                         73460100
+                     ],
+                     [
+                         "2026/4/6",
+                         3190,
+                         3416,
+                         3080,
+                         3381,
+                         62599400
+                     ],
+                     [
+                         "2026/4/13",
+                         3367,
+                         3479,
+                         3061,
+                         3070,
+                         74835900
+                     ],
+                     [
+                         "2026/4/20",
+                         3102,
+                         3271,
+                         2976,
+                         3175,
+                         69999800
+                     ],
+                     [
+                         "2026/4/27",
+                         3124,
+                         3299,
+                         3016,
+                         3151,
+                         43323200
+                     ],
+                     [
+                         "2026/5/7",
+                         3180,
+                         3364,
+                         3164,
+                         3251,
+                         15655200
+                     ]
+                 ]
+    }
+]
+    ;
+
+    function drawAll() {
+      const root = document.getElementById('charts');
+      stocks.forEach((s, i) => {
+        const section = document.createElement('section');
+        section.className = 'stock';
+        section.innerHTML = `<div class="label">${s.code} ${s.name}</div><div id="candle_${i}" class="candle"></div><div id="volume_${i}" class="volume"></div>`;
+        root.appendChild(section);
+
+        const candleData = new google.visualization.DataTable(); //OHLCの並びが独特だが、これはGooogleChartの仕様
+        candleData.addColumn('string', 'Date');
+        candleData.addColumn('number', 'Low');
+        candleData.addColumn('number', 'Open');
+        candleData.addColumn('number', 'Close');
+        candleData.addColumn('number', 'High');
+        
+        candleData.addRows(
+          s.rows.map(r => [
+            r[0],
+            r[3], // Low
+            r[1], // Open
+            r[4], // Close
+            r[2]  // High
+          ])
+        );
+
+        const volumeData = new google.visualization.DataTable();
+        volumeData.addColumn('string', 'Date');
+        volumeData.addColumn('number', 'Volume');
+        volumeData.addRows(s.rows.map(r => [r[0], r[5]]));
+
+        new google.visualization.CandlestickChart(document.getElementById(`candle_${i}`)).draw(candleData, {
+          legend: 'none',
+          bar: { groupWidth: '70%' },
+          candlestick: {
+            fallingColor: { strokeWidth: 0, fill: '#1b5e20' },
+            risingColor: { strokeWidth: 0, fill: '#b71c1c' }
+          },
+          chartArea: { left: 60, top: 20, width: '86%', height: '76%' }
+        });
+
+        new google.visualization.ColumnChart(document.getElementById(`volume_${i}`)).draw(volumeData, {
+          legend: 'none',
+          colors: ['#455a64'],
+          chartArea: { left: 60, top: 10, width: '86%', height: '60%' },
+          hAxis: { slantedText: false}
+        });
+      });
+    }
+  </script>
+</body>
+</html>
+
