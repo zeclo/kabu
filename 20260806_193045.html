@@ -1,0 +1,247 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>銘柄チャート 20260223</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body { font-family: "Yu Gothic UI", sans-serif; margin: 16px; }
+    h1 { margin: 0 0 16px; }
+    .stock { margin: 20px 0 36px; }
+    .label { font-weight: 700; margin-bottom: 15px; }
+    .candle { width: 50%; height: 340px; }
+    .volume { width: 50%; height: 180px; }
+  </style>
+</head>
+<body>
+  <h1>銘柄チャート（YYYY-MM-DD作成）</h1>
+  <div id="charts"></div>
+
+  <script>
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawAll);
+
+    const stocks = 
+      [
+    {
+        "code":  "2936",
+        "name":  "ベースフード(株)",
+        "rows":  [
+                     [
+                         "2026/7/9",
+                         282,
+                         283,
+                         280,
+                         283,
+                         8800
+                     ],
+                     [
+                         "2026/7/10",
+                         280,
+                         282,
+                         278,
+                         279,
+                         36000
+                     ],
+                     [
+                         "2026/7/13",
+                         279,
+                         285,
+                         279,
+                         279,
+                         25100
+                     ],
+                     [
+                         "2026/7/14",
+                         280,
+                         289,
+                         280,
+                         286,
+                         26700
+                     ],
+                     [
+                         "2026/7/15",
+                         290,
+                         291,
+                         285,
+                         290,
+                         43600
+                     ],
+                     [
+                         "2026/7/16",
+                         275,
+                         281,
+                         272,
+                         275,
+                         155700
+                     ],
+                     [
+                         "2026/7/17",
+                         273,
+                         273,
+                         258,
+                         261,
+                         165100
+                     ],
+                     [
+                         "2026/7/21",
+                         262,
+                         266,
+                         255,
+                         264,
+                         71600
+                     ],
+                     [
+                         "2026/7/22",
+                         262,
+                         270,
+                         261,
+                         268,
+                         76600
+                     ],
+                     [
+                         "2026/7/23",
+                         266,
+                         269,
+                         263,
+                         265,
+                         17200
+                     ],
+                     [
+                         "2026/7/24",
+                         260,
+                         265,
+                         260,
+                         262,
+                         25200
+                     ],
+                     [
+                         "2026/7/27",
+                         262,
+                         262,
+                         257,
+                         261,
+                         34200
+                     ],
+                     [
+                         "2026/7/28",
+                         259,
+                         260,
+                         256,
+                         256,
+                         26800
+                     ],
+                     [
+                         "2026/7/29",
+                         258,
+                         259,
+                         257,
+                         258,
+                         13700
+                     ],
+                     [
+                         "2026/7/30",
+                         260,
+                         260,
+                         256,
+                         256,
+                         22100
+                     ],
+                     [
+                         "2026/7/31",
+                         256,
+                         261,
+                         256,
+                         257,
+                         25800
+                     ],
+                     [
+                         "2026/8/3",
+                         257,
+                         261,
+                         257,
+                         261,
+                         23900
+                     ],
+                     [
+                         "2026/8/4",
+                         257,
+                         260,
+                         257,
+                         258,
+                         16000
+                     ],
+                     [
+                         "2026/8/5",
+                         257,
+                         260,
+                         257,
+                         258,
+                         15100
+                     ],
+                     [
+                         "2026/8/6",
+                         260,
+                         310,
+                         257,
+                         275,
+                         707100
+                     ]
+                 ]
+    }
+]
+    ;
+
+    function drawAll() {
+      const root = document.getElementById('charts');
+      stocks.forEach((s, i) => {
+        const section = document.createElement('section');
+        section.className = 'stock';
+        section.innerHTML = `<div class="label">${s.code} ${s.name}</div><div id="candle_${i}" class="candle"></div><div id="volume_${i}" class="volume"></div>`;
+        root.appendChild(section);
+
+        const candleData = new google.visualization.DataTable(); //OHLCの並びが独特だが、これはGooogleChartの仕様
+        candleData.addColumn('string', 'Date');
+        candleData.addColumn('number', 'Low');
+        candleData.addColumn('number', 'Open');
+        candleData.addColumn('number', 'Close');
+        candleData.addColumn('number', 'High');
+        
+        candleData.addRows(
+          s.rows.map(r => [
+            r[0],
+            r[3], // Low
+            r[1], // Open
+            r[4], // Close
+            r[2]  // High
+          ])
+        );
+
+        const volumeData = new google.visualization.DataTable();
+        volumeData.addColumn('string', 'Date');
+        volumeData.addColumn('number', 'Volume');
+        volumeData.addRows(s.rows.map(r => [r[0], r[5]]));
+
+        new google.visualization.CandlestickChart(document.getElementById(`candle_${i}`)).draw(candleData, {
+          legend: 'none',
+          bar: { groupWidth: '70%' },
+          candlestick: {
+            fallingColor: { strokeWidth: 0, fill: '#1b5e20' },
+            risingColor: { strokeWidth: 0, fill: '#b71c1c' }
+          },
+          chartArea: { left: 60, top: 20, width: '86%', height: '76%' }
+        });
+
+        new google.visualization.ColumnChart(document.getElementById(`volume_${i}`)).draw(volumeData, {
+          legend: 'none',
+          colors: ['#455a64'],
+          chartArea: { left: 60, top: 10, width: '86%', height: '60%' },
+          hAxis: { slantedText: false}
+        });
+      });
+    }
+  </script>
+</body>
+</html>
+
