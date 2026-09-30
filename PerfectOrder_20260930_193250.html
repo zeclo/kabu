@@ -1,0 +1,247 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>銘柄チャート 20260223</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body { font-family: "Yu Gothic UI", sans-serif; margin: 16px; }
+    h1 { margin: 0 0 16px; }
+    .stock { margin: 20px 0 36px; }
+    .label { font-weight: 700; margin-bottom: 15px; }
+    .candle { width: 50%; height: 340px; }
+    .volume { width: 50%; height: 180px; }
+  </style>
+</head>
+<body>
+  <h1>銘柄チャート（YYYY-MM-DD作成）</h1>
+  <div id="charts"></div>
+
+  <script>
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawAll);
+
+    const stocks = 
+      [
+    {
+        "code":  "9509",
+        "name":  "北海道電力(株)",
+        "rows":  [
+                     [
+                         "2026/5/18",
+                         980,
+                         984,
+                         923,
+                         929,
+                         14959900
+                     ],
+                     [
+                         "2026/5/25",
+                         939,
+                         945,
+                         897,
+                         933,
+                         15718700
+                     ],
+                     [
+                         "2026/6/1",
+                         924,
+                         941,
+                         887,
+                         926,
+                         14496200
+                     ],
+                     [
+                         "2026/6/8",
+                         917,
+                         939,
+                         905,
+                         928,
+                         10210700
+                     ],
+                     [
+                         "2026/6/15",
+                         948,
+                         962,
+                         917,
+                         919,
+                         11341500
+                     ],
+                     [
+                         "2026/6/22",
+                         927,
+                         936,
+                         900,
+                         920,
+                         9876000
+                     ],
+                     [
+                         "2026/6/29",
+                         933,
+                         977,
+                         916,
+                         970,
+                         11239100
+                     ],
+                     [
+                         "2026/7/6",
+                         982,
+                         989,
+                         958,
+                         970,
+                         10408400
+                     ],
+                     [
+                         "2026/7/13",
+                         967,
+                         1027,
+                         947,
+                         998,
+                         11488900
+                     ],
+                     [
+                         "2026/7/21",
+                         1008,
+                         1024,
+                         1001,
+                         1008,
+                         7368300
+                     ],
+                     [
+                         "2026/7/27",
+                         1021,
+                         1041,
+                         1006,
+                         1026,
+                         10887600
+                     ],
+                     [
+                         "2026/8/3",
+                         1028,
+                         1053,
+                         1003,
+                         1022,
+                         11045700
+                     ],
+                     [
+                         "2026/8/10",
+                         1028,
+                         1048,
+                         1014,
+                         1044,
+                         6803400
+                     ],
+                     [
+                         "2026/8/17",
+                         1044,
+                         1096,
+                         1041,
+                         1088,
+                         9589600
+                     ],
+                     [
+                         "2026/8/24",
+                         1084,
+                         1107,
+                         1054,
+                         1084,
+                         9102800
+                     ],
+                     [
+                         "2026/8/31",
+                         1084,
+                         1174,
+                         1078,
+                         1125,
+                         16948800
+                     ],
+                     [
+                         "2026/9/7",
+                         1138,
+                         1167,
+                         1088,
+                         1114,
+                         8901500
+                     ],
+                     [
+                         "2026/9/14",
+                         1108,
+                         1168,
+                         1101,
+                         1125,
+                         10161600
+                     ],
+                     [
+                         "2026/9/24",
+                         1126,
+                         1128,
+                         1104,
+                         1116,
+                         5042500
+                     ],
+                     [
+                         "2026/9/28",
+                         1146,
+                         1154,
+                         1094,
+                         1132,
+                         8683800
+                     ]
+                 ]
+    }
+]
+    ;
+
+    function drawAll() {
+      const root = document.getElementById('charts');
+      stocks.forEach((s, i) => {
+        const section = document.createElement('section');
+        section.className = 'stock';
+        section.innerHTML = `<div class="label">${s.code} ${s.name}</div><div id="candle_${i}" class="candle"></div><div id="volume_${i}" class="volume"></div>`;
+        root.appendChild(section);
+
+        const candleData = new google.visualization.DataTable(); //OHLCの並びが独特だが、これはGooogleChartの仕様
+        candleData.addColumn('string', 'Date');
+        candleData.addColumn('number', 'Low');
+        candleData.addColumn('number', 'Open');
+        candleData.addColumn('number', 'Close');
+        candleData.addColumn('number', 'High');
+        
+        candleData.addRows(
+          s.rows.map(r => [
+            r[0],
+            r[3], // Low
+            r[1], // Open
+            r[4], // Close
+            r[2]  // High
+          ])
+        );
+
+        const volumeData = new google.visualization.DataTable();
+        volumeData.addColumn('string', 'Date');
+        volumeData.addColumn('number', 'Volume');
+        volumeData.addRows(s.rows.map(r => [r[0], r[5]]));
+
+        new google.visualization.CandlestickChart(document.getElementById(`candle_${i}`)).draw(candleData, {
+          legend: 'none',
+          bar: { groupWidth: '70%' },
+          candlestick: {
+            fallingColor: { strokeWidth: 0, fill: '#1b5e20' },
+            risingColor: { strokeWidth: 0, fill: '#b71c1c' }
+          },
+          chartArea: { left: 60, top: 20, width: '86%', height: '76%' }
+        });
+
+        new google.visualization.ColumnChart(document.getElementById(`volume_${i}`)).draw(volumeData, {
+          legend: 'none',
+          colors: ['#455a64'],
+          chartArea: { left: 60, top: 10, width: '86%', height: '60%' },
+          hAxis: { slantedText: false}
+        });
+      });
+    }
+  </script>
+</body>
+</html>
+
