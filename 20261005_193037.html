@@ -1,0 +1,413 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>銘柄チャート 20260223</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body { font-family: "Yu Gothic UI", sans-serif; margin: 16px; }
+    h1 { margin: 0 0 16px; }
+    .stock { margin: 20px 0 36px; }
+    .label { font-weight: 700; margin-bottom: 15px; }
+    .candle { width: 50%; height: 340px; }
+    .volume { width: 50%; height: 180px; }
+  </style>
+</head>
+<body>
+  <h1>銘柄チャート（YYYY-MM-DD作成）</h1>
+  <div id="charts"></div>
+
+  <script>
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawAll);
+
+    const stocks = 
+      [
+    {
+        "code":  "3967",
+        "name":  "(株)エルテス",
+        "rows":  [
+                     [
+                         "2026/9/3",
+                         562,
+                         570,
+                         562,
+                         566,
+                         15800
+                     ],
+                     [
+                         "2026/9/4",
+                         566,
+                         570,
+                         563,
+                         565,
+                         12500
+                     ],
+                     [
+                         "2026/9/7",
+                         565,
+                         567,
+                         564,
+                         564,
+                         8500
+                     ],
+                     [
+                         "2026/9/8",
+                         563,
+                         570,
+                         562,
+                         570,
+                         8600
+                     ],
+                     [
+                         "2026/9/9",
+                         576,
+                         576,
+                         562,
+                         562,
+                         7900
+                     ],
+                     [
+                         "2026/9/10",
+                         570,
+                         570,
+                         563,
+                         563,
+                         5800
+                     ],
+                     [
+                         "2026/9/11",
+                         563,
+                         564,
+                         551,
+                         551,
+                         18500
+                     ],
+                     [
+                         "2026/9/14",
+                         551,
+                         580,
+                         550,
+                         571,
+                         87900
+                     ],
+                     [
+                         "2026/9/15",
+                         581,
+                         582,
+                         565,
+                         566,
+                         13500
+                     ],
+                     [
+                         "2026/9/16",
+                         572,
+                         573,
+                         565,
+                         565,
+                         8900
+                     ],
+                     [
+                         "2026/9/17",
+                         572,
+                         572,
+                         562,
+                         565,
+                         19400
+                     ],
+                     [
+                         "2026/9/18",
+                         570,
+                         575,
+                         568,
+                         575,
+                         5700
+                     ],
+                     [
+                         "2026/9/24",
+                         571,
+                         578,
+                         571,
+                         575,
+                         16400
+                     ],
+                     [
+                         "2026/9/25",
+                         575,
+                         577,
+                         575,
+                         576,
+                         2300
+                     ],
+                     [
+                         "2026/9/28",
+                         578,
+                         579,
+                         570,
+                         577,
+                         11200
+                     ],
+                     [
+                         "2026/9/29",
+                         579,
+                         581,
+                         572,
+                         572,
+                         14800
+                     ],
+                     [
+                         "2026/9/30",
+                         573,
+                         575,
+                         570,
+                         573,
+                         7600
+                     ],
+                     [
+                         "2026/10/1",
+                         574,
+                         673,
+                         571,
+                         673,
+                         55300
+                     ],
+                     [
+                         "2026/10/2",
+                         773,
+                         773,
+                         773,
+                         773,
+                         42700
+                     ],
+                     [
+                         "2026/10/5",
+                         850,
+                         913,
+                         754,
+                         800,
+                         2780800
+                     ]
+                 ]
+    },
+    {
+        "code":  "6664",
+        "name":  "(株)オプトエレクトロニクス",
+        "rows":  [
+                     [
+                         "2026/9/3",
+                         261,
+                         261,
+                         259,
+                         259,
+                         5000
+                     ],
+                     [
+                         "2026/9/4",
+                         259,
+                         259,
+                         255,
+                         257,
+                         1200
+                     ],
+                     [
+                         "2026/9/7",
+                         258,
+                         258,
+                         254,
+                         254,
+                         3600
+                     ],
+                     [
+                         "2026/9/8",
+                         251,
+                         262,
+                         250,
+                         262,
+                         5400
+                     ],
+                     [
+                         "2026/9/9",
+                         262,
+                         264,
+                         255,
+                         263,
+                         7700
+                     ],
+                     [
+                         "2026/9/10",
+                         264,
+                         265,
+                         262,
+                         263,
+                         7100
+                     ],
+                     [
+                         "2026/9/11",
+                         263,
+                         266,
+                         260,
+                         265,
+                         7700
+                     ],
+                     [
+                         "2026/9/14",
+                         264,
+                         267,
+                         259,
+                         267,
+                         3100
+                     ],
+                     [
+                         "2026/9/15",
+                         267,
+                         267,
+                         260,
+                         265,
+                         1700
+                     ],
+                     [
+                         "2026/9/16",
+                         266,
+                         267,
+                         264,
+                         266,
+                         3800
+                     ],
+                     [
+                         "2026/9/17",
+                         267,
+                         267,
+                         259,
+                         259,
+                         5500
+                     ],
+                     [
+                         "2026/9/18",
+                         261,
+                         262,
+                         258,
+                         260,
+                         900
+                     ],
+                     [
+                         "2026/9/24",
+                         260,
+                         267,
+                         248,
+                         267,
+                         52000
+                     ],
+                     [
+                         "2026/9/25",
+                         267,
+                         267,
+                         260,
+                         260,
+                         5300
+                     ],
+                     [
+                         "2026/9/28",
+                         262,
+                         262,
+                         258,
+                         258,
+                         2700
+                     ],
+                     [
+                         "2026/9/29",
+                         258,
+                         261,
+                         258,
+                         260,
+                         2600
+                     ],
+                     [
+                         "2026/9/30",
+                         264,
+                         264,
+                         257,
+                         261,
+                         5500
+                     ],
+                     [
+                         "2026/10/1",
+                         261,
+                         261,
+                         254,
+                         254,
+                         2800
+                     ],
+                     [
+                         "2026/10/2",
+                         250,
+                         252,
+                         236,
+                         236,
+                         26200
+                     ],
+                     [
+                         "2026/10/5",
+                         260,
+                         293,
+                         250,
+                         274,
+                         874200
+                     ]
+                 ]
+    }
+]
+    ;
+
+    function drawAll() {
+      const root = document.getElementById('charts');
+      stocks.forEach((s, i) => {
+        const section = document.createElement('section');
+        section.className = 'stock';
+        section.innerHTML = `<div class="label">${s.code} ${s.name}</div><div id="candle_${i}" class="candle"></div><div id="volume_${i}" class="volume"></div>`;
+        root.appendChild(section);
+
+        const candleData = new google.visualization.DataTable(); //OHLCの並びが独特だが、これはGooogleChartの仕様
+        candleData.addColumn('string', 'Date');
+        candleData.addColumn('number', 'Low');
+        candleData.addColumn('number', 'Open');
+        candleData.addColumn('number', 'Close');
+        candleData.addColumn('number', 'High');
+        
+        candleData.addRows(
+          s.rows.map(r => [
+            r[0],
+            r[3], // Low
+            r[1], // Open
+            r[4], // Close
+            r[2]  // High
+          ])
+        );
+
+        const volumeData = new google.visualization.DataTable();
+        volumeData.addColumn('string', 'Date');
+        volumeData.addColumn('number', 'Volume');
+        volumeData.addRows(s.rows.map(r => [r[0], r[5]]));
+
+        new google.visualization.CandlestickChart(document.getElementById(`candle_${i}`)).draw(candleData, {
+          legend: 'none',
+          bar: { groupWidth: '70%' },
+          candlestick: {
+            fallingColor: { strokeWidth: 0, fill: '#1b5e20' },
+            risingColor: { strokeWidth: 0, fill: '#b71c1c' }
+          },
+          chartArea: { left: 60, top: 20, width: '86%', height: '76%' }
+        });
+
+        new google.visualization.ColumnChart(document.getElementById(`volume_${i}`)).draw(volumeData, {
+          legend: 'none',
+          colors: ['#455a64'],
+          chartArea: { left: 60, top: 10, width: '86%', height: '60%' },
+          hAxis: { slantedText: false}
+        });
+      });
+    }
+  </script>
+</body>
+</html>
+
