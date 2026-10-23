@@ -1,0 +1,247 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>銘柄チャート 20260223</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body { font-family: "Yu Gothic UI", sans-serif; margin: 16px; }
+    h1 { margin: 0 0 16px; }
+    .stock { margin: 20px 0 36px; }
+    .label { font-weight: 700; margin-bottom: 15px; }
+    .candle { width: 50%; height: 340px; }
+    .volume { width: 50%; height: 180px; }
+  </style>
+</head>
+<body>
+  <h1>銘柄チャート（YYYY-MM-DD作成）</h1>
+  <div id="charts"></div>
+
+  <script>
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawAll);
+
+    const stocks = 
+      [
+    {
+        "code":  "4385",
+        "name":  "(株)メルカリ",
+        "rows":  [
+                     [
+                         "2026/6/8",
+                         3874,
+                         3889,
+                         3562,
+                         3730,
+                         8765000
+                     ],
+                     [
+                         "2026/6/15",
+                         3738,
+                         4065,
+                         3647,
+                         3870,
+                         9850500
+                     ],
+                     [
+                         "2026/6/22",
+                         3800,
+                         4224,
+                         3736,
+                         3763,
+                         8694500
+                     ],
+                     [
+                         "2026/6/29",
+                         3833,
+                         4401,
+                         3827,
+                         4392,
+                         9954600
+                     ],
+                     [
+                         "2026/7/6",
+                         4398,
+                         4853,
+                         4363,
+                         4785,
+                         9683600
+                     ],
+                     [
+                         "2026/7/13",
+                         4830,
+                         4860,
+                         4568,
+                         4616,
+                         7228700
+                     ],
+                     [
+                         "2026/7/21",
+                         4658,
+                         4675,
+                         4182,
+                         4250,
+                         8207800
+                     ],
+                     [
+                         "2026/7/27",
+                         4368,
+                         4619,
+                         4244,
+                         4290,
+                         7502000
+                     ],
+                     [
+                         "2026/8/3",
+                         4322,
+                         5079,
+                         4163,
+                         5030,
+                         13006000
+                     ],
+                     [
+                         "2026/8/10",
+                         5085,
+                         5111,
+                         4681,
+                         4851,
+                         7249900
+                     ],
+                     [
+                         "2026/8/17",
+                         4831,
+                         4914,
+                         4473,
+                         4745,
+                         10785000
+                     ],
+                     [
+                         "2026/8/24",
+                         4675,
+                         4697,
+                         4440,
+                         4617,
+                         9119100
+                     ],
+                     [
+                         "2026/8/31",
+                         4617,
+                         4659,
+                         4199,
+                         4443,
+                         9592500
+                     ],
+                     [
+                         "2026/9/7",
+                         4466,
+                         4473,
+                         3788,
+                         3826,
+                         9601200
+                     ],
+                     [
+                         "2026/9/14",
+                         3814,
+                         3949,
+                         3613,
+                         3699,
+                         12796800
+                     ],
+                     [
+                         "2026/9/24",
+                         3691,
+                         3723,
+                         3550,
+                         3635,
+                         4992300
+                     ],
+                     [
+                         "2026/9/28",
+                         3635,
+                         3678,
+                         3507,
+                         3546,
+                         8493900
+                     ],
+                     [
+                         "2026/10/5",
+                         3540,
+                         3749,
+                         3489,
+                         3737,
+                         8835100
+                     ],
+                     [
+                         "2026/10/13",
+                         3759,
+                         3896,
+                         3642,
+                         3821,
+                         9541800
+                     ],
+                     [
+                         "2026/10/19",
+                         3740,
+                         3750,
+                         3388,
+                         3704,
+                         11272600
+                     ]
+                 ]
+    }
+]
+    ;
+
+    function drawAll() {
+      const root = document.getElementById('charts');
+      stocks.forEach((s, i) => {
+        const section = document.createElement('section');
+        section.className = 'stock';
+        section.innerHTML = `<div class="label">${s.code} ${s.name}</div><div id="candle_${i}" class="candle"></div><div id="volume_${i}" class="volume"></div>`;
+        root.appendChild(section);
+
+        const candleData = new google.visualization.DataTable(); //OHLCの並びが独特だが、これはGooogleChartの仕様
+        candleData.addColumn('string', 'Date');
+        candleData.addColumn('number', 'Low');
+        candleData.addColumn('number', 'Open');
+        candleData.addColumn('number', 'Close');
+        candleData.addColumn('number', 'High');
+        
+        candleData.addRows(
+          s.rows.map(r => [
+            r[0],
+            r[3], // Low
+            r[1], // Open
+            r[4], // Close
+            r[2]  // High
+          ])
+        );
+
+        const volumeData = new google.visualization.DataTable();
+        volumeData.addColumn('string', 'Date');
+        volumeData.addColumn('number', 'Volume');
+        volumeData.addRows(s.rows.map(r => [r[0], r[5]]));
+
+        new google.visualization.CandlestickChart(document.getElementById(`candle_${i}`)).draw(candleData, {
+          legend: 'none',
+          bar: { groupWidth: '70%' },
+          candlestick: {
+            fallingColor: { strokeWidth: 0, fill: '#1b5e20' },
+            risingColor: { strokeWidth: 0, fill: '#b71c1c' }
+          },
+          chartArea: { left: 60, top: 20, width: '86%', height: '76%' }
+        });
+
+        new google.visualization.ColumnChart(document.getElementById(`volume_${i}`)).draw(volumeData, {
+          legend: 'none',
+          colors: ['#455a64'],
+          chartArea: { left: 60, top: 10, width: '86%', height: '60%' },
+          hAxis: { slantedText: false}
+        });
+      });
+    }
+  </script>
+</body>
+</html>
+
